@@ -5,16 +5,13 @@ import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 
 const apiUrl = process.env.REACT_APP_API_URL;
-//react 如何确定读取哪个env下的值， 当运行npm start的时候会读取env.development  而运行npm build时会读取env下的值
-/* ${apiUrl}/projects?name=${param.name}&personId=${param.personId}
-如果name=&personId=1 会引起歧义： 可能有两种结果，1.后端会返回name为空值，id为1的数据， 2. 会返回忽略name值，id为1的所有数据
-*/
 
-export const ProjectListScreen = () => {
+export const ProjectListScreen: React.FC = () => {
   const [param, setParam] = useState({ name: "", personId: "" });
+  //这里list users没有定义应该是不对的
   const [list, setList] = useState([]);
   const [users, setUsers] = useState([]);
-  const debouncedParam = useDebounce(param, 2000);
+  const debouncedParam = useDebounce(param, 200);
   useEffect(() => {
     console.log("run");
     fetch(
@@ -36,7 +33,6 @@ export const ProjectListScreen = () => {
   });
   return (
     <div>
-      {console.log("div")}
       <SearchPanel param={param} setParam={setParam} users={users} />
       <List list={list} users={users} />
     </div>

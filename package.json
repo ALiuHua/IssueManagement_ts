@@ -10,6 +10,7 @@
     "@types/node": "^16.18.0",
     "@types/react": "^18.0.22",
     "@types/react-dom": "^18.0.7",
+    "jira-dev-tool": "^1.7.61",
     "qs": "^6.11.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -22,7 +23,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "json-server": "json-server __json_server_mock__/db.json --watch --port 3001"
+    "json-server": "json-server __json_server_mock__/db.json --watch --port 3001 --middlewares ./__json_server_mock__/middleware.js"
   },
   "eslintConfig": {
     "extends": [
@@ -44,5 +45,8 @@
   },
   "devDependencies": {
     "json-server": "^0.17.0"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
