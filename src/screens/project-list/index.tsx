@@ -23,7 +23,7 @@ export const ProjectListScreen: React.FC = () => {
     //     setList(await response.json());
     //   }
     // });
-  }, [debouncedParam]);
+  }, [debouncedParam, client]);
 
   useMount(() => {
     client("users").then(setUsers);

@@ -28,8 +28,14 @@ const AuthContext = createContext<
 AuthContext.displayName = "AuthContext";
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
+  console.log("auth con===text", user);
   useMount(() => {
-    bootstrapUser().then(setUser);
+    bootstrapUser().then((user) => {
+      if (user) {
+        setUser(user);
+        console.log("setuser runnin", user);
+      }
+    });
   });
   const login = (form: AuthForm) =>
     // auth.login(form).then((user) => setUser(user));
