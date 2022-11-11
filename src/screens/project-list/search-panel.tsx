@@ -1,4 +1,6 @@
-import { Input, Select } from "antd";
+/** @jsxImportSource @emotion/react */
+import { css } from "@emotion/react";
+import { Form, Input, Select } from "antd";
 import React from "react";
 export interface User {
   id: string;
@@ -24,17 +26,25 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
   setParam,
 }) => {
   return (
-    <form>
-      <div>
+    <Form
+      css={css`
+        margin-bottom: 2rem;
+      `}
+      layout="inline"
+    >
+      <Form.Item>
         <Input
           type="text"
           value={param.name}
+          placeholder="项目名"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             setParam((preParam) => {
               return { ...preParam, name: event.target.value };
             })
           }
         />
+      </Form.Item>
+      <Form.Item>
         <Select
           value={param.personId}
           onChange={(value) => {
@@ -51,7 +61,7 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
             </Select.Option>
           ))}
         </Select>
-      </div>
-    </form>
+      </Form.Item>
+    </Form>
   );
 };
