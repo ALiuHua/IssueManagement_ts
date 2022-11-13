@@ -1,39 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { cleanObject, useMount, useDebounce } from "utils";
+import React, { useState } from "react";
+import { useDebounce } from "utils";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
-import { useHttp } from "utils/http";
-import styled from "@emotion/styled";
 
+import styled from "@emotion/styled";
+import { Typography } from "antd";
+import { useProjects } from "utils/use-projects";
+import { useUser } from "utils/use-user";
 export const ProjectListScreen: React.FC = () => {
   const [param, setParam] = useState({ name: "", personId: "" });
+  const debouncedParam = useDebounce(param, 2000);
+  const { data: users } = useUser();
+  console.log(users);
   //这里list users没有定义应该是不对的
-  const [list, setList] = useState([]);
-  const [users, setUsers] = useState([]);
-  const debouncedParam = useDebounce(param, 200);
-
-  const client = useHttp();
-  useEffect(() => {
-    console.log("running");
-    client("projects", { data: cleanObject(debouncedParam) }).then(setList);
-    // console.log("run");
-    // fetch(
-    //   `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`
-    // ).then(async (response) => {
-    //   if (response.ok) {
-    //     setList(await response.json());
-    //   }
-    // });
-  }, [debouncedParam, client]);
-
-  useMount(() => {
-    client("users").then(setUsers);
-  });
+  const { isLoading, error, data: list } = useProjects(debouncedParam);
+  console.log(debouncedParam);
+  console.log(list);
   return (
     <Container>
       <h1>项目列表</h1>
-      <SearchPanel param={param} setParam={setParam} users={users} />
-      <List list={list} users={users} />
+      <SearchPanel param={param} setParam={setParam} users={users || []} />
+      {error ? (
+        <Typography.Text type="danger">{error.message}</Typography.Text>
+      ) : null}
+      <List dataSource={list || []} loading={isLoading} users={users || []} />
     </Container>
   );
 };

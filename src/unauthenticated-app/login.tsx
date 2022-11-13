@@ -1,14 +1,28 @@
 import React from "react";
 import { useAuth } from "context/auth-context";
 // const apiUrl = process.env.REACT_APP_API_URL;
-import { Button, Form, Input } from "antd";
+import { Form, Input } from "antd";
 import { LongButton } from "unauthenticated-app";
-export const LoginScreen = () => {
+import { useAsync } from "utils/use-async";
+export const LoginScreen = ({
+  onError,
+}: {
+  onError: (error: Error) => void;
+}) => {
   const { login } = useAuth();
   console.log("this is runingn");
-  const submitHandler = (values: { username: string; password: string }) => {
+  const { run, isLoading, error } = useAsync(undefined, { throwOnError: true });
+  const submitHandler = async (values: {
+    username: string;
+    password: string;
+  }) => {
     // console.log(event.currentTarget.elements);
-    login(values);
+
+    try {
+      await run(login(values));
+    } catch (e) {
+      onError(e as Error);
+    }
   };
   return (
     <Form onFinish={submitHandler}>
@@ -25,7 +39,7 @@ export const LoginScreen = () => {
         <Input type="text" id="password" placeholder="密码" />
       </Form.Item>
       <Form.Item>
-        <LongButton htmlType="submit" type="primary">
+        <LongButton loading={isLoading} htmlType="submit" type="primary">
           登陆
         </LongButton>
       </Form.Item>

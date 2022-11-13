@@ -3,7 +3,7 @@ import { Row } from "components/lib";
 import { useAuth } from "context/auth-context";
 import { ProjectListScreen } from "screens/project-list";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
-import { Dropdown } from "antd";
+import { Button, Dropdown } from "antd";
 
 export const AuthenticatedApp = () => {
   const { logout, user } = useAuth();
@@ -25,11 +25,18 @@ export const AuthenticatedApp = () => {
           // }
           menu={{
             items: [
-              { label: <button onClick={logout}>登出</button>, key: "logout" },
+              {
+                label: (
+                  <Button type="link" onClick={logout}>
+                    登出
+                  </Button>
+                ),
+                key: "logout",
+              },
             ],
           }}
         >
-          <span>Hi, {user?.name}</span>
+          <Button type="link">Hi, {user?.name}</Button>
         </Dropdown>
       </Header>
       <Main>

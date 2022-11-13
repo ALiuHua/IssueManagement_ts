@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
 
-export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
+export const isVoid = (value: unknown) =>
+  value === "" || value === undefined || value === null;
 
 //在一个函数中，改变传入的对象本身是不好的，因为js里的对象是引用类型；会造成传入的对象受到污染
-
-export const cleanObject = (obj: object) => {
+// object的覆盖类型很广，这里我们想要键值对类型的对象，所以可以使用 {[key:string]:unknown}
+// let c = {...()=>{}} 因为解构函数是没有意义的，所以会返回一个空对象c
+export const cleanObject = (obj: { [key: string]: unknown }) => {
   const result = { ...obj };
 
   Object.keys(result).forEach((key) => {
-    //@ts-ignore
     const value = result[key];
-    if (isFalsy(value)) {
-      //@ts-ignore
+    if (isVoid(value)) {
       delete result[key];
     }
   });
@@ -22,6 +22,7 @@ export const cleanObject = (obj: object) => {
 export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 

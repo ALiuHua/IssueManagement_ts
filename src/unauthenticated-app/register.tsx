@@ -1,15 +1,36 @@
 import React from "react";
 import { useAuth } from "context/auth-context";
-import { Form, Input, Button } from "antd";
+import { Form, Input } from "antd";
 import { LongButton } from "unauthenticated-app";
+import { useAsync } from "utils/use-async";
 // const apiUrl = process.env.REACT_APP_API_URL;
 
-export const RegisterScreen = () => {
+export const RegisterScreen = ({
+  onError,
+}: {
+  onError: (error: Error) => void;
+}) => {
   const { register } = useAuth();
   console.log("this is runingn");
-  const submitHandler = (values: { username: string; password: string }) => {
+  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
+  const submitHandler = async ({
+    cpassword,
+    ...values
+  }: {
+    username: string;
+    password: string;
+    cpassword: string;
+  }) => {
     // console.log(event.currentTarget.elements);
-    register(values);
+    if (cpassword !== values.password) {
+      onError(new Error("请确认输入相同的密码"));
+      return;
+    }
+    try {
+      await run(register(values));
+    } catch (e) {
+      onError(e as Error);
+    }
   };
   return (
     <Form onFinish={submitHandler}>
@@ -25,8 +46,14 @@ export const RegisterScreen = () => {
       >
         <Input type="text" id="password" placeholder="密码" />
       </Form.Item>
+      <Form.Item
+        name="cpassword"
+        rules={[{ required: true, message: "请输入密码" }]}
+      >
+        <Input type="text" id="cpassword" placeholder="确认密码" />
+      </Form.Item>
       <Form.Item>
-        <LongButton htmlType="submit" type="primary">
+        <LongButton loading={isLoading} htmlType="submit" type="primary">
           注册
         </LongButton>
       </Form.Item>

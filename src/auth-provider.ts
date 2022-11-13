@@ -18,7 +18,7 @@ export const login = (data: { username: string; password: string }) => {
     if (response.ok) {
       return handleUserResponse(await response.json());
     } else {
-      return Promise.reject(data);
+      return Promise.reject(await response.json());
       //throw new error will avoid return undefined
     }
   });
@@ -29,11 +29,11 @@ export const register = (data: { username: string; password: string }) => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
-  }).then(async (response) => {
+  }).then(async (response: Response) => {
     if (response.ok) {
       return handleUserResponse(await response.json());
     } else {
-      return Promise.reject(data);
+      return Promise.reject(await response.json());
       //throw new error will avoid return undefined
     }
   });
