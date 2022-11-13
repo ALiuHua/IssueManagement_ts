@@ -9,7 +9,7 @@ import { useProjects } from "utils/use-projects";
 import { useUser } from "utils/use-user";
 export const ProjectListScreen: React.FC = () => {
   const [param, setParam] = useState({ name: "", personId: "" });
-  const debouncedParam = useDebounce(param, 2000);
+  const debouncedParam = useDebounce(param, 200);
   const { data: users } = useUser();
   console.log(users);
   //这里list users没有定义应该是不对的
