@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Navigate } from "react-router";
 
 export const isVoid = (value: unknown) =>
   value === "" || value === undefined || value === null;
@@ -71,4 +72,9 @@ export const useDocumentTitle = (
       }
     };
   }, [title, oldTitle, keepOnUnmount]);
+};
+
+export const resetRoute = () => {
+  //重置路由到主页面并且刷新整个页面
+  window.location.href = window.location.origin;
 };
