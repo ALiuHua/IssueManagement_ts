@@ -17,7 +17,8 @@ interface SearchPanelProps {
   };
   // setParam: (param: SearchPanelProps["param"]) => void;
   setParam: (
-    callback: (param: SearchPanelProps["param"]) => SearchPanelProps["param"]
+    // callback: (param: SearchPanelProps["param"]) => SearchPanelProps["param"]
+    param: SearchPanelProps["param"]
   ) => void;
 }
 export const SearchPanel: React.FC<SearchPanelProps> = ({
@@ -38,9 +39,7 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
           value={param.name}
           placeholder="项目名"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setParam((preParam) => {
-              return { ...preParam, name: event.target.value };
-            })
+            setParam({ ...param, name: event.target.value })
           }
         />
       </Form.Item>
@@ -48,15 +47,12 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
         <Select
           value={param.personId}
           onChange={(value) => {
-            setParam((preParam) => ({
-              ...preParam,
-              personId: value,
-            }));
+            setParam({ ...param, personId: value });
           }}
         >
           <Select.Option value={""}>负责人</Select.Option>
           {users.map((user) => (
-            <Select.Option value={user.id} key={user.id}>
+            <Select.Option value={String(user.id)} key={user.id}>
               {user.name}
             </Select.Option>
           ))}
