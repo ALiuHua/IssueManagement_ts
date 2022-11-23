@@ -77,4 +77,5 @@ export const useDocumentTitle = (
 export const resetRoute = () => {
   //重置路由到主页面并且刷新整个页面
   window.location.href = window.location.origin;
+  //window.location.origin 是什么？
 };

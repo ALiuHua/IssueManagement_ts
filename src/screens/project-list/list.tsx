@@ -1,7 +1,9 @@
 import { Table, TableProps } from "antd";
+import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { User } from "screens/project-list/search-panel";
+import { useEditProject } from "utils/use-projects";
 
 export interface Project {
   id: number;
@@ -17,10 +19,27 @@ interface ListProps extends TableProps<Project> {
 }
 
 export const List: React.FC<ListProps> = ({ users, ...props }) => {
+  const { mutate } = useEditProject();
+  // const pinProject = (id: number, pin: boolean) => mutate({ id, pin });
+  //函数的柯里化 p44 point free
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
   return (
     <Table
+      rowKey={"id"}
       pagination={false}
       columns={[
+        {
+          title: <Pin checked={true} disabled={true} />,
+          render(value, project) {
+            return (
+              <Pin
+                checked={project.pin}
+                // onCheckedChange={(pin) => pinProject(project.id, pin)}
+                onCheckedChange={pinProject(project.id)}
+              />
+            );
+          },
+        },
         {
           title: "名称",
           sorter: (a, b) => a.name.localeCompare(b.name),
