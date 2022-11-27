@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { useMountedRef } from "utils";
 
 interface State<D> {
   error: Error | null;
@@ -12,6 +13,7 @@ const defaultInitialState: State<null> = {
 };
 
 const defaultConfig = { throwOnError: false };
+
 export const useAsync = <D>(
   initialState?: State<D>,
   initialConfig?: typeof defaultConfig
@@ -21,6 +23,8 @@ export const useAsync = <D>(
     ...initialState,
   });
   const config = { ...defaultConfig, ...initialConfig };
+  const mountedRef = useMountedRef();
+  const [retry, setRetry] = useState(() => () => {});
   const setData = useCallback((data: D) => {
     setState({
       data,
@@ -34,16 +38,22 @@ export const useAsync = <D>(
   }, []);
 
   const run = useCallback(
-    (promise: Promise<D>) => {
+    (promise: Promise<D>, retryConfig?: () => Promise<D>) => {
+      //这里的promise其实是对请求结果的消化，传进来的是请求的结果
       if (!promise || !promise.then()) {
         throw new Error("请传入 Promise 类型数据");
       }
+      setRetry(() => () => {
+        if (retryConfig) {
+          run(retryConfig(), retryConfig);
+        }
+      });
       setState((state) => {
         return { ...state, stat: "loading" };
       });
       return promise
         .then((data) => {
-          setData(data);
+          if (mountedRef) setData(data);
           return data;
         })
         .catch((error) => {
@@ -56,6 +66,7 @@ export const useAsync = <D>(
     },
     [setData, setError, config.throwOnError]
   );
+
   return {
     isIdle: state.stat === "idle",
     isLoading: state.stat === "loading",
@@ -64,6 +75,8 @@ export const useAsync = <D>(
     run,
     setData,
     setError,
+    //retry 被调用时，重新跑一遍run 让state刷新一遍
+    retry,
     ...state,
   };
 };

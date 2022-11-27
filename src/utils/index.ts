@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { Navigate } from "react-router";
 
 export const isVoid = (value: unknown) =>
   value === "" || value === undefined || value === null;
@@ -78,4 +77,20 @@ export const resetRoute = () => {
   //重置路由到主页面并且刷新整个页面
   window.location.href = window.location.origin;
   //window.location.origin 是什么？
+};
+
+/**
+ *返回组件的挂载状态，如果还没挂载或者已经卸载，返回false;否则返回true;
+ *用来优化组件被卸载后，继续更新卸载组件的state的错误情况
+ */
+
+export const useMountedRef = () => {
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  });
+  return mountedRef;
 };

@@ -7,9 +7,15 @@ import { useAsync } from "./use-async";
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();
   const { run, ...result } = useAsync<Project[]>();
+  console.log("this is useAsync outside");
+
   useEffect(() => {
-    console.log(param);
-    run(client("projects", { data: cleanObject(param || {}) }));
+    console.log("this is useAsync");
+
+    const getProjects = () =>
+      client("projects", { data: cleanObject(param || {}) });
+
+    run(getProjects(), getProjects);
   }, [param, client, run]);
   return result;
 };

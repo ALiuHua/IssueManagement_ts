@@ -16,13 +16,15 @@ export interface Project {
 
 interface ListProps extends TableProps<Project> {
   users: User[];
+  retry: () => void;
 }
 
-export const List: React.FC<ListProps> = ({ users, ...props }) => {
+export const List: React.FC<ListProps> = ({ users, retry, ...props }) => {
   const { mutate } = useEditProject();
   // const pinProject = (id: number, pin: boolean) => mutate({ id, pin });
   //函数的柯里化 p44 point free
-  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
+  const pinProject = (id: number) => (pin: boolean) =>
+    mutate({ id, pin }).then(() => retry());
   return (
     <Table
       rowKey={"id"}

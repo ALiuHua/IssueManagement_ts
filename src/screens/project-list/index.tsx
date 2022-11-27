@@ -14,7 +14,12 @@ export const ProjectListScreen: React.FC = () => {
   const [param, setParam] = useProjectsSearchParams();
   const { data: users } = useUser();
   //这里list users没有定义应该是不对的
-  const { isLoading, error, data: list } = useProjects(useDebounce(param, 200));
+  const {
+    isLoading,
+    error,
+    data: list,
+    retry,
+  } = useProjects(useDebounce(param, 200));
   useDocumentTitle("项目列表", false);
   return (
     <Container>
@@ -23,7 +28,12 @@ export const ProjectListScreen: React.FC = () => {
       {error ? (
         <Typography.Text type="danger">{error.message}</Typography.Text>
       ) : null}
-      <List dataSource={list || []} loading={isLoading} users={users || []} />
+      <List
+        dataSource={list || []}
+        loading={isLoading}
+        users={users || []}
+        retry={retry}
+      />
     </Container>
   );
 };
