@@ -38,7 +38,7 @@ export const useAsync = <D>(
   }, []);
 
   const run = useCallback(
-    (promise: Promise<D>, retryConfig?: () => Promise<D>) => {
+    async (promise: Promise<D>, retryConfig?: () => Promise<D>) => {
       //这里的promise其实是对请求结果的消化，传进来的是请求的结果
       if (!promise || !promise.then()) {
         throw new Error("请传入 Promise 类型数据");
@@ -64,7 +64,7 @@ export const useAsync = <D>(
           return error;
         });
     },
-    [setData, setError, config.throwOnError]
+    [setData, setError, config.throwOnError, mountedRef]
   );
 
   return {

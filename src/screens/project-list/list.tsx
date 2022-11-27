@@ -1,4 +1,5 @@
-import { Table, TableProps } from "antd";
+import { Button, Dropdown, Table, TableProps } from "antd";
+import { ButtonNoPadding } from "components/lib";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
@@ -16,10 +17,16 @@ export interface Project {
 
 interface ListProps extends TableProps<Project> {
   users: User[];
+  setProjectModalOpen: (isOpen: boolean) => void;
   retry: () => void;
 }
 
-export const List: React.FC<ListProps> = ({ users, retry, ...props }) => {
+export const List: React.FC<ListProps> = ({
+  users,
+  retry,
+  setProjectModalOpen,
+  ...props
+}) => {
   const { mutate } = useEditProject();
   // const pinProject = (id: number, pin: boolean) => mutate({ id, pin });
   //函数的柯里化 p44 point free
@@ -73,6 +80,41 @@ export const List: React.FC<ListProps> = ({ users, retry, ...props }) => {
                   ? dayjs(project.created).format("YYYY-MM-DD")
                   : "无"}
               </span>
+            );
+          },
+        },
+        {
+          render(value, project) {
+            return (
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      label: (
+                        <Button
+                          type="link"
+                          onClick={() => {
+                            setProjectModalOpen(true);
+                          }}
+                        >
+                          编辑
+                        </Button>
+                      ),
+                      key: "edit",
+                    },
+                    {
+                      label: (
+                        <Button type="link" onClick={() => {}}>
+                          删除
+                        </Button>
+                      ),
+                      key: "edit",
+                    },
+                  ],
+                }}
+              >
+                <ButtonNoPadding type="link">...</ButtonNoPadding>
+              </Dropdown>
             );
           },
         },
