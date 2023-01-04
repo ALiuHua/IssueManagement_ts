@@ -6,6 +6,7 @@ import { EpicScreen } from "screens/epic";
 import { KanbanScreen } from "screens/kanban";
 
 export const ProjectScreen = () => {
+  console.log("project screen 渲染上、");
   return (
     <div>
       <h1>Project screen</h1>

@@ -4,19 +4,18 @@ import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 
 import styled from "@emotion/styled";
-import { Button, Typography } from "antd";
+import { Typography } from "antd";
 import { useProjects } from "utils/use-projects";
 import { useUser } from "utils/use-user";
-import { useProjectsSearchParams } from "./utils";
-import { Row } from "components/lib";
+import { useProjectModal, useProjectsSearchParams } from "./utils";
+import { ButtonNoPadding, Row } from "components/lib";
 
-export const ProjectListScreen: React.FC<{
-  projectButton: JSX.Element;
-}> = (props) => {
+export const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
   console.log("project list running");
   // const [param, setParam] = useState({ name: "", personId: "" });
   const [param, setParam] = useProjectsSearchParams();
+  const { open } = useProjectModal();
   const { data: users } = useUser();
   //这里list users没有定义应该是不对的
   const {
@@ -30,7 +29,10 @@ export const ProjectListScreen: React.FC<{
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        {props.projectButton}
+        {/* {props.projectButton} */}
+        <ButtonNoPadding onClick={open} type="link">
+          创建项目
+        </ButtonNoPadding>
       </Row>
 
       <SearchPanel param={param} setParam={setParam} users={users || []} />
@@ -42,7 +44,6 @@ export const ProjectListScreen: React.FC<{
         loading={isLoading}
         users={users || []}
         retry={retry}
-        projectButton={props.projectButton}
       />
     </Container>
   );

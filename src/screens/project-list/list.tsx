@@ -18,14 +18,14 @@ export interface Project {
 
 interface ListProps extends TableProps<Project> {
   users: User[];
-  projectButton: JSX.Element;
+  // projectButton: JSX.Element;
   retry: () => void;
 }
 
 export const List: React.FC<ListProps> = ({
   users,
   retry,
-  projectButton,
+
   ...props
 }) => {
   const { mutate } = useEditProject();
@@ -91,7 +91,7 @@ export const List: React.FC<ListProps> = ({
                 menu={{
                   items: [
                     {
-                      label: projectButton,
+                      // label: projectButton,
                       key: "edit",
                     },
                     {
