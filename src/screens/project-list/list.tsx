@@ -2,6 +2,7 @@ import { Button, Dropdown, Table, TableProps } from "antd";
 import { ButtonNoPadding } from "components/lib";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
+import React from "react";
 import { Link } from "react-router-dom";
 import { User } from "screens/project-list/search-panel";
 import { useEditProject } from "utils/use-projects";
@@ -17,14 +18,14 @@ export interface Project {
 
 interface ListProps extends TableProps<Project> {
   users: User[];
-  setProjectModalOpen: (isOpen: boolean) => void;
+  projectButton: JSX.Element;
   retry: () => void;
 }
 
 export const List: React.FC<ListProps> = ({
   users,
   retry,
-  setProjectModalOpen,
+  projectButton,
   ...props
 }) => {
   const { mutate } = useEditProject();
@@ -90,16 +91,7 @@ export const List: React.FC<ListProps> = ({
                 menu={{
                   items: [
                     {
-                      label: (
-                        <Button
-                          type="link"
-                          onClick={() => {
-                            setProjectModalOpen(true);
-                          }}
-                        >
-                          编辑
-                        </Button>
-                      ),
+                      label: projectButton,
                       key: "edit",
                     },
                     {

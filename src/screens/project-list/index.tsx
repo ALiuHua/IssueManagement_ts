@@ -11,7 +11,7 @@ import { useProjectsSearchParams } from "./utils";
 import { Row } from "components/lib";
 
 export const ProjectListScreen: React.FC<{
-  setProjectModalOpen: (isOpen: boolean) => void;
+  projectButton: JSX.Element;
 }> = (props) => {
   useDocumentTitle("项目列表", false);
   console.log("project list running");
@@ -30,9 +30,7 @@ export const ProjectListScreen: React.FC<{
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={() => props.setProjectModalOpen(true)}>
-          创建项目
-        </Button>
+        {props.projectButton}
       </Row>
 
       <SearchPanel param={param} setParam={setParam} users={users || []} />
@@ -44,7 +42,7 @@ export const ProjectListScreen: React.FC<{
         loading={isLoading}
         users={users || []}
         retry={retry}
-        setProjectModalOpen={props.setProjectModalOpen}
+        projectButton={props.projectButton}
       />
     </Container>
   );

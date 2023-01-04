@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
 import { cleanObject } from "utils";
 
@@ -6,6 +6,7 @@ import { cleanObject } from "utils";
 export const useUrlQueryParam = <K extends string>(keys: K[]) => {
   //这也是state值，更新会触发re-render
   const [searchParams, setSearchParams] = useSearchParams();
+  //const [stateKeys] = useState(keys);
   return [
     useMemo(
       () =>
@@ -17,6 +18,7 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
         }, {} as { [key in K]: string }),
       //这里如果加进来keys时仍会出现无限循环的情况；
       //解决办法1. 把传进来的keys定义为state。这样只要我们不使用setState更新state的值，则keys就不会重新创建，两次effect比较就想等
+      // [searchParams,stateKeys]
       //2.
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [searchParams]
