@@ -19,20 +19,19 @@ export interface Project {
 interface ListProps extends TableProps<Project> {
   users: User[];
   // projectButton: JSX.Element;
-  retry: () => void;
+  // retry: () => void;
 }
 
 export const List: React.FC<ListProps> = ({
   users,
-  retry,
+  // retry,
 
   ...props
 }) => {
   const { mutate } = useEditProject();
   // const pinProject = (id: number, pin: boolean) => mutate({ id, pin });
-  //函数的柯里化 p44 point free
-  const pinProject = (id: number) => (pin: boolean) =>
-    mutate({ id, pin }).then(() => retry());
+  // //函数的柯里化 p44 point free
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
   return (
     <Table
       rowKey={"id"}
@@ -91,7 +90,11 @@ export const List: React.FC<ListProps> = ({
                 menu={{
                   items: [
                     {
-                      // label: projectButton,
+                      label: (
+                        <Button type="link" onClick={() => {}}>
+                          编辑
+                        </Button>
+                      ),
                       key: "edit",
                     },
                     {
@@ -100,7 +103,7 @@ export const List: React.FC<ListProps> = ({
                           删除
                         </Button>
                       ),
-                      key: "edit",
+                      key: "delete",
                     },
                   ],
                 }}

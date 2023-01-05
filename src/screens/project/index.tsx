@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Routes, Route, Navigate } from "react-router";
 import { Link } from "react-router-dom";
 import { EpicScreen } from "screens/epic";
