@@ -7,6 +7,7 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
   //这也是state值，更新会触发re-render
   const [searchParams, setSearchParams] = useSearchParams();
   //const [stateKeys] = useState(keys);
+  console.log("useUrlquery");
   return [
     useMemo(
       () =>
@@ -23,11 +24,14 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [searchParams]
     ),
-    (params: Partial<{ [key in K]: unknown }>) => {
+    async (params: Partial<{ [key in K]: unknown }>) => {
+      console.log(params);
+      console.log({ ...Object.fromEntries(searchParams) });
       const o = cleanObject({
         ...Object.fromEntries(searchParams),
         ...params,
       }) as URLSearchParamsInit;
+      console.log(o);
       return setSearchParams(o);
     },
   ] as const;

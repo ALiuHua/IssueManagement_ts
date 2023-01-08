@@ -4,7 +4,6 @@ import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 
 import styled from "@emotion/styled";
-import { Typography } from "antd";
 import { useProjects } from "utils/use-projects";
 import { useUser } from "utils/use-user";
 import { useProjectModal, useProjectsSearchParams } from "./utils";

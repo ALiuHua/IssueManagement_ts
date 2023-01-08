@@ -16,12 +16,10 @@ export const useProjectsSearchParams = () => {
 };
 
 export const useProjectModal = () => {
-  console.log("获取url");
-
+  console.log("useProjectModal");
   const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
     "projectCreate",
   ]);
-  console.log(projectCreate);
   const [{ editingProjectId }, setEditingProjectId] = useUrlQueryParam([
     "editingProjectId",
   ]);
@@ -30,13 +28,13 @@ export const useProjectModal = () => {
   );
   const open = () => setProjectCreate({ projectCreate: true });
   const close = () => {
-    setProjectCreate({ projectCreate: undefined });
-    console.log("thi is");
+    //这里会出现无法得到预期的把两个值都设置为undefined的情况，这是因为在set函数中的 console.log({ ...Object.fromEntries(searchParams) });
+    //得到的都是最初的原始值
     setEditingProjectId({ editingProjectId: undefined });
+    setProjectCreate({ projectCreate: undefined });
   };
   const startEdit = (id: number) =>
     setEditingProjectId({ editingProjectId: id });
-  console.log(projectCreate, editingProjectId);
   return {
     projectModalOpen: projectCreate === "true" || Boolean(editingProject),
     open,

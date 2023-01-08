@@ -6,6 +6,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { User } from "screens/project-list/search-panel";
 import { useEditProject } from "utils/use-projects";
+import { useProjectModal } from "./utils";
 
 export interface Project {
   id: number;
@@ -32,6 +33,8 @@ export const List: React.FC<ListProps> = ({
   // const pinProject = (id: number, pin: boolean) => mutate({ id, pin });
   // //函数的柯里化 p44 point free
   const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
+  const { startEdit } = useProjectModal();
+  const editProject = (id: number) => () => startEdit(id);
   return (
     <Table
       rowKey={"id"}
@@ -91,7 +94,7 @@ export const List: React.FC<ListProps> = ({
                   items: [
                     {
                       label: (
-                        <Button type="link" onClick={() => {}}>
+                        <Button type="link" onClick={editProject(project.id)}>
                           编辑
                         </Button>
                       ),
