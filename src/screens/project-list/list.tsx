@@ -1,12 +1,12 @@
-import { Button, Dropdown, Table, TableProps } from "antd";
+import { Button, Dropdown, Modal, Table, TableProps } from "antd";
 import { ButtonNoPadding } from "components/lib";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import React from "react";
 import { Link } from "react-router-dom";
 import { User } from "screens/project-list/search-panel";
-import { useEditProject } from "utils/use-projects";
-import { useProjectModal } from "./utils";
+import { useDeleteProject, useEditProject } from "utils/use-projects";
+import { useProjectModal, useProjectQueryKey } from "./utils";
 
 export interface Project {
   id: number;
@@ -29,12 +29,11 @@ export const List: React.FC<ListProps> = ({
 
   ...props
 }) => {
-  const { mutate } = useEditProject();
+  const { mutate } = useEditProject(useProjectQueryKey());
   // const pinProject = (id: number, pin: boolean) => mutate({ id, pin });
   // //函数的柯里化 p44 point free
   const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
-  const { startEdit } = useProjectModal();
-  const editProject = (id: number) => () => startEdit(id);
+
   return (
     <Table
       rowKey={"id"}
@@ -88,32 +87,7 @@ export const List: React.FC<ListProps> = ({
         },
         {
           render(value, project) {
-            return (
-              <Dropdown
-                menu={{
-                  items: [
-                    {
-                      label: (
-                        <Button type="link" onClick={editProject(project.id)}>
-                          编辑
-                        </Button>
-                      ),
-                      key: "edit",
-                    },
-                    {
-                      label: (
-                        <Button type="link" onClick={() => {}}>
-                          删除
-                        </Button>
-                      ),
-                      key: "delete",
-                    },
-                  ],
-                }}
-              >
-                <ButtonNoPadding type="link">...</ButtonNoPadding>
-              </Dropdown>
-            );
+            return <More project={project} />;
           },
         },
       ]}
@@ -123,3 +97,50 @@ export const List: React.FC<ListProps> = ({
 };
 
 // th table head element / td table data cell element
+
+const More = ({ project }: { project: Project }) => {
+  const { startEdit } = useProjectModal();
+  const editProject = (id: number) => () => startEdit(id);
+  const { mutate: deleteProject } = useDeleteProject(useProjectQueryKey());
+  const confirmDeleteProject = (id: number) => {
+    Modal.confirm({
+      title: "确定删除这个项目吗？",
+      content: "点击确认删除",
+      okText: "确定",
+      onOk() {
+        deleteProject({ id });
+      },
+    });
+  };
+  return (
+    <Dropdown
+      menu={{
+        items: [
+          {
+            label: (
+              <Button type="link" onClick={editProject(project.id)}>
+                编辑
+              </Button>
+            ),
+            key: "edit",
+          },
+          {
+            label: (
+              <Button
+                type="link"
+                onClick={() => {
+                  confirmDeleteProject(project.id);
+                }}
+              >
+                删除
+              </Button>
+            ),
+            key: "delete",
+          },
+        ],
+      }}
+    >
+      <ButtonNoPadding type="link">...</ButtonNoPadding>
+    </Dropdown>
+  );
+};

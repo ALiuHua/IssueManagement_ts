@@ -5,7 +5,7 @@ import { ErrorBox } from "components/lib";
 import { UserSelect } from "components/user-select";
 import { useEffect } from "react";
 import { useAddProject, useEditProject } from "utils/use-projects";
-import { useProjectModal } from "./utils";
+import { useProjectModal, useProjectQueryKey } from "./utils";
 
 export const ProjectModal = () => {
   const { projectModalOpen, close, editingProject, isLoading } =
@@ -13,7 +13,11 @@ export const ProjectModal = () => {
   const useMutateProject = editingProject ? useEditProject : useAddProject;
   console.log(projectModalOpen);
 
-  const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject();
+  const {
+    mutateAsync,
+    error,
+    isLoading: mutateLoading,
+  } = useMutateProject(useProjectQueryKey());
   //mutate 和mutateAsync的区别： mutate是处理异步的，这样可以使我们在异步处理完之后再进行后续操作，例如更新表单】
   const [form] = useForm();
   const onFinish = (values: any) => {
