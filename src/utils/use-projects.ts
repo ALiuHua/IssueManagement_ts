@@ -1,6 +1,5 @@
 import { QueryKey, useMutation, useQuery } from "react-query";
-import { Project } from "screens/project-list/list";
-import { useProjectsSearchParams } from "screens/project-list/utils";
+import { Project } from "types/Project";
 import { useHttp } from "./http";
 import {
   useEditConfig,
@@ -18,8 +17,6 @@ export const useProjects = (param?: Partial<Project>) => {
 
 export const useEditProject = (queryKey: QueryKey) => {
   const client = useHttp();
-  const [searchParams] = useProjectsSearchParams();
-  console.log("searchParams", searchParams);
   return useMutation(
     (params: Partial<Project>) =>
       client(`projects/${params.id}`, {

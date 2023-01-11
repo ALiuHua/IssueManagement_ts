@@ -11,22 +11,27 @@ export const ProjectModal = () => {
   const { projectModalOpen, close, editingProject, isLoading } =
     useProjectModal();
   const useMutateProject = editingProject ? useEditProject : useAddProject;
-  console.log(projectModalOpen);
+  console.log(editingProject);
 
   const {
     mutateAsync,
     error,
     isLoading: mutateLoading,
   } = useMutateProject(useProjectQueryKey());
+  console.log(mutateAsync, error, mutateLoading);
   //mutate 和mutateAsync的区别： mutate是处理异步的，这样可以使我们在异步处理完之后再进行后续操作，例如更新表单】
   const [form] = useForm();
   const onFinish = (values: any) => {
     mutateAsync({ ...editingProject, ...values }).then(() => {
+      console.log("then");
       form.resetFields();
       close();
     });
   };
-
+  const closeModal = () => {
+    form.resetFields();
+    close();
+  };
   const title = editingProject ? "编辑项目" : "创建项目";
 
   useEffect(() => {
@@ -37,7 +42,7 @@ export const ProjectModal = () => {
     <Drawer
       forceRender={true}
       width="100%"
-      onClose={close}
+      onClose={closeModal}
       open={projectModalOpen}
     >
       <Container>

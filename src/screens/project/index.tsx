@@ -15,6 +15,9 @@ export const ProjectScreen = () => {
         <Route path="/kanban" element={<KanbanScreen />}></Route>
         <Route path="/epic" element={<EpicScreen />}></Route>
         <Route path="*" element={<Navigate to={"kanban"} replace />} />
+        {/* <Route path="*" element={<Navigate to={"kanban"} />} /> 
+        // 如果不加replace无法实现后退按钮回退到上一个页面。因为跳转默认是push
+        */}
       </Routes>
     </div>
   );

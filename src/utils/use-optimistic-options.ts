@@ -6,8 +6,12 @@ export const useConfig = (
 ) => {
   const queryClient = useQueryClient();
   return {
-    onSuccess: () => queryClient.invalidateQueries(queryKey),
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKey);
+      console.log(queryKey);
+    },
     async onMutate(target: any) {
+      console.log("on Mutate start");
       const previousItems = queryClient.getQueryData(queryKey);
       queryClient.setQueryData(queryKey, (old?: any[]) =>
         callback(target, old)

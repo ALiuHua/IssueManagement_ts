@@ -5,7 +5,8 @@ import { cleanObject } from "utils";
 //返回页面url中，指定键的参数值
 export const useUrlQueryParam = <K extends string>(keys: K[]) => {
   //这也是state值，更新会触发re-render
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const setSearchParams = useSetUrlSearchParam();
   //const [stateKeys] = useState(keys);
   console.log("useUrlquery");
   return [
@@ -25,16 +26,21 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
       [searchParams]
     ),
     async (params: Partial<{ [key in K]: unknown }>) => {
-      console.log(params);
-      console.log({ ...Object.fromEntries(searchParams) });
-      const o = cleanObject({
-        ...Object.fromEntries(searchParams),
-        ...params,
-      }) as URLSearchParamsInit;
-      console.log(o);
-      return setSearchParams(o);
+      return setSearchParams(params);
     },
   ] as const;
+};
+
+export const useSetUrlSearchParam = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  return (params: { [key in string]: unknown }) => {
+    const o = cleanObject({
+      ...Object.fromEntries(searchParams),
+      ...params,
+    }) as URLSearchParamsInit;
+    console.log(o);
+    return setSearchParams(o);
+  };
 };
 
 //as const
