@@ -11,7 +11,6 @@ import { ButtonNoPadding, ErrorBox, Row } from "components/lib";
 
 export const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
-  console.log("project list running");
   // const [param, setParam] = useState({ name: "", personId: "" });
   const [param, setParam] = useProjectsSearchParams();
   const { open } = useProjectModal();

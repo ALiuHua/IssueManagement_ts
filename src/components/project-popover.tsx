@@ -8,7 +8,6 @@ import { ButtonNoPadding } from "./lib";
 
 export const ProjectPopover = () => {
   const { open } = useProjectModal();
-  console.log("popover");
   const { data: projects } = useProjects();
   const pinnedProjects = projects?.filter((project) => project.pin);
   const content = (

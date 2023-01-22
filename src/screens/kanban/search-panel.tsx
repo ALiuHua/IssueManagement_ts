@@ -1,12 +1,15 @@
-import { Button, Input } from "antd";
+import { Button, Input, InputRef } from "antd";
 import { Row } from "components/lib";
 import { TaskTypeSelect } from "components/task-type-select";
 import { UserSelect } from "components/user-select";
+import { RefObject, useRef } from "react";
+
 import { useSetUrlSearchParam } from "utils/url";
 import { useTasksSearchParams } from "./util";
 
 export const SearchPanel = () => {
   const searchParams = useTasksSearchParams();
+  console.log("set search param");
   const setSearchParams = useSetUrlSearchParam();
   const reset = () => {
     setSearchParams({
@@ -16,14 +19,22 @@ export const SearchPanel = () => {
       tagId: undefined,
     });
   };
+
   return (
     <Row marginBottom={4} gap={true}>
       <Input
         style={{ width: "20rem" }}
         placeholder="任务名"
         value={searchParams.name}
-        onChange={(e) => setSearchParams({ name: e.target.value })}
+        onChange={(e) => {
+          setSearchParams({ name: e.target.value });
+        }}
       />
+      <input
+        onChange={(e) => {
+          setSearchParams({ name: e.target.value });
+        }}
+      ></input>
       <UserSelect
         defaultOptionName="经办人"
         value={searchParams.processorId}

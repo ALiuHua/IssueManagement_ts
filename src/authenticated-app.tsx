@@ -33,7 +33,6 @@ export const AuthenticatedApp = () => {
 };
 
 const PageHeader = () => {
-  console.log("Headering running");
   return (
     <Header gap={2}>
       <ButtonNoPadding type="link" onClick={resetRoute}>

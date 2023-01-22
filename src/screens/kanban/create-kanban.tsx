@@ -1,7 +1,6 @@
 import { Input } from "antd";
 import { useState } from "react";
 import { useAddKanban } from "utils/kanban";
-import { ColumnsContainer } from ".";
 import { Container } from "./kanban-column";
 import { useKanbansQueryKey, useProjectIdInUrl } from "./util";
 

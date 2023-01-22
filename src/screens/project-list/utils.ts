@@ -20,7 +20,6 @@ export const useProjectQueryKey = () => {
   return ["projects", parmas];
 };
 export const useProjectModal = () => {
-  console.log("useProjectModal");
   const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
     "projectCreate",
   ]);

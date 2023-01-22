@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Spin } from "antd";
 import { ScreenContainer } from "components/lib";
-import { useDocumentTitle } from "utils";
+import { useDebounce, useDocumentTitle } from "utils";
 import { useKanbans } from "utils/kanban";
 import { useTasks } from "utils/task";
 import { CreateKanban } from "./create-kanban";
@@ -20,7 +20,8 @@ export const KanbanScreen = () => {
   const { data: kanbans = [], isLoading: kanbanIsLoading } = useKanbans(
     useKanbansSearchParams()
   );
-  const { isLoading: taskIsLoading } = useTasks(useTasksSearchParams());
+  const debouncedTasksSearchParams = useDebounce(useTasksSearchParams(), 200);
+  const { isLoading: taskIsLoading } = useTasks(debouncedTasksSearchParams);
   const isLoading = taskIsLoading || kanbanIsLoading;
   return (
     <ScreenContainer>

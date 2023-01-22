@@ -10,7 +10,6 @@ const useRouteType = () => {
   return units[units.length - 1];
 };
 export const ProjectScreen = () => {
-  console.log("project screen 渲染上、");
   const routeType = useRouteType();
   return (
     <Container>

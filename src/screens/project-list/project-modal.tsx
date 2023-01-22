@@ -11,14 +11,12 @@ export const ProjectModal = () => {
   const { projectModalOpen, close, editingProject, isLoading } =
     useProjectModal();
   const useMutateProject = editingProject ? useEditProject : useAddProject;
-  console.log(editingProject);
 
   const {
     mutateAsync,
     error,
     isLoading: mutateLoading,
   } = useMutateProject(useProjectQueryKey());
-  console.log(mutateAsync, error, mutateLoading);
   //mutate 和mutateAsync的区别： mutate是处理异步的，这样可以使我们在异步处理完之后再进行后续操作，例如更新表单】
   const [form] = useForm();
   const onFinish = (values: any) => {

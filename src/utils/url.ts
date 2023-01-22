@@ -8,7 +8,7 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
   const [searchParams] = useSearchParams();
   const setSearchParams = useSetUrlSearchParam();
   //const [stateKeys] = useState(keys);
-  console.log("useUrlquery");
+
   return [
     useMemo(
       () =>
@@ -38,7 +38,6 @@ export const useSetUrlSearchParam = () => {
       ...Object.fromEntries(searchParams),
       ...params,
     }) as URLSearchParamsInit;
-    console.log(o);
     return setSearchParams(o);
   };
 };
