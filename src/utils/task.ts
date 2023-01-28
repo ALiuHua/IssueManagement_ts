@@ -15,6 +15,14 @@ export const useTasks = (param?: Partial<Task>) => {
   );
 };
 
+export const useTask = (id?: number) => {
+  const client = useHttp();
+
+  return useQuery<Task>(["task", { id }], () => client(`tasks/${id}`), {
+    enabled: Boolean(id),
+  });
+};
+
 export const useAddTask = (queryKey: QueryKey) => {
   const client = useHttp();
   return useMutation(
@@ -25,14 +33,6 @@ export const useAddTask = (queryKey: QueryKey) => {
       }),
     useAddConfig(queryKey)
   );
-};
-
-export const useTask = (id?: number) => {
-  const client = useHttp();
-
-  return useQuery<Task>(["task", { id }], () => client(`tasks/${id}`), {
-    enabled: Boolean(id),
-  });
 };
 
 export const useEditTask = (queryKey: QueryKey) => {
