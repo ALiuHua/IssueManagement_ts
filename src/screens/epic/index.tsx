@@ -1,4 +1,4 @@
-import { Button, List } from "antd";
+import { Button, List, Modal } from "antd";
 import { Row, ScreenContainer } from "components/lib";
 import dayjs from "dayjs";
 import React, { useState } from "react";
@@ -40,7 +40,21 @@ export const EpicScreen = () => {
               title={
                 <Row between={true}>
                   <span>{epic.name}</span>
-                  <Button type="link">删除</Button>
+                  <Button
+                    type="link"
+                    onClick={() =>
+                      Modal.confirm({
+                        okText: "确定",
+                        cancelText: "取消",
+                        title: "确定删除任务组吗？",
+                        onOk() {
+                          deleteEpic({ id: epic.id });
+                        },
+                      })
+                    }
+                  >
+                    删除
+                  </Button>
                 </Row>
               }
               description={
