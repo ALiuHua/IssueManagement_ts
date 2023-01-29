@@ -13,6 +13,7 @@ import { Mark } from "components/mark";
 import { useDebounce } from "utils";
 import { useDeleteKanban } from "utils/kanban";
 import { Row } from "components/lib";
+import { Drag, Drop, DropChild } from "components/drag-and-drop";
 
 const TaskCard = ({ task }: { task: Task }) => {
   const { startEdit } = useTaskModal();
@@ -55,10 +56,22 @@ export const KanbanColumn = React.forwardRef<
         <More kanban={kanban} key={kanban.id} />
       </Row>
       <TasksContainer>
-        {tasks.map((task) => (
-          <TaskCard task={task} key={task.id} />
-        ))}
-        <CreateTask kanbanId={kanban.id} />
+        <Drop type="ROW" direction="vertical" droppableId={String(kanban.id)}>
+          <DropChild style={{ minHeight: "5px" }}>
+            {tasks.map((task, taskIndex) => (
+              <Drag
+                key={task.id}
+                index={taskIndex}
+                draggableId={"task" + task.id}
+              >
+                <div ref={ref}>
+                  <TaskCard task={task} key={task.id} />
+                </div>
+              </Drag>
+            ))}
+            <CreateTask kanbanId={kanban.id} />
+          </DropChild>
+        </Drop>
       </TasksContainer>
     </Container>
   );
@@ -77,7 +90,7 @@ const More = ({ kanban }: { kanban: Kanban }) => {
   };
   const overlay = (
     <Menu>
-      <Menu.Item>
+      <Menu.Item key={"delete"}>
         <Button type="link" onClick={startEdit}>
           删除
         </Button>
