@@ -41,6 +41,7 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 16rem 1fr;
   height: 100%;
+  width: 100%;
 `;
 
 const Aside = styled.aside`
