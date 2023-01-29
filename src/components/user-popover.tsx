@@ -3,26 +3,22 @@ import { Divider, List, Popover, Typography } from "antd";
 import React from "react";
 import { useProjectModal } from "screens/project-list/utils";
 import { useProjects } from "utils/use-projects";
+import { useUser } from "utils/use-user";
 import { ButtonNoPadding } from "./lib";
 
-export const ProjectPopover = () => {
-  const { open } = useProjectModal();
-  const { data: projects, refetch } = useProjects();
-  const pinnedProjects = projects?.filter((project) => project.pin);
+export const UserPopover = () => {
+  const { data: users, refetch } = useUser();
+
   const content = (
     <ContentContainer>
-      <Typography.Text type="secondary">收藏项目</Typography.Text>
+      <Typography.Text type="secondary">组员列表</Typography.Text>
       <List>
-        {pinnedProjects?.map((project) => (
-          <List.Item key={project.id}>
-            <List.Item.Meta title={project.name}></List.Item.Meta>
+        {users?.map((user) => (
+          <List.Item key={user.id}>
+            <List.Item.Meta title={user.name}></List.Item.Meta>
           </List.Item>
         ))}
       </List>
-      <Divider />
-      <ButtonNoPadding onClick={open} type="link">
-        创建项目
-      </ButtonNoPadding>
     </ContentContainer>
   );
   return (
@@ -33,7 +29,7 @@ export const ProjectPopover = () => {
         refetch();
       }}
     >
-      <span>项目</span>
+      <span>组员</span>
     </Popover>
   );
 };
