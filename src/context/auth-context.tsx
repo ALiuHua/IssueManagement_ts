@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import * as auth from "auth-provider";
 import { AuthUser } from "auth-provider";
 import { http } from "utils/http";
