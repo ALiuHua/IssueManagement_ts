@@ -36,7 +36,7 @@ export const LoginScreen = ({
         name="password"
         rules={[{ required: true, message: "请输入密码" }]}
       >
-        <Input type="text" id="password" placeholder="密码" />
+        <Input.Password type="text" id="password" placeholder="密码" />
       </Form.Item>
       <Form.Item>
         <LongButton loading={isLoading} htmlType="submit" type="primary">
