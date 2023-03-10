@@ -1,4 +1,3 @@
-import React from "react";
 import { useAuth } from "context/auth-context";
 // const apiUrl = process.env.REACT_APP_API_URL;
 import { Form, Input } from "antd";
@@ -11,7 +10,7 @@ export const LoginScreen = ({
 }) => {
   const { login } = useAuth();
   console.log("this is runingn");
-  const { run, isLoading, error } = useAsync(undefined, { throwOnError: true });
+  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
   const submitHandler = async (values: {
     username: string;
     password: string;

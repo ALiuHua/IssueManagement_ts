@@ -1,10 +1,6 @@
 import styled from "@emotion/styled";
-import { Divider, List, Popover, Typography } from "antd";
-import React from "react";
-import { useProjectModal } from "screens/project-list/utils";
-import { useProjects } from "utils/use-projects";
+import { List, Popover, Typography } from "antd";
 import { useUser } from "utils/use-user";
-import { ButtonNoPadding } from "./lib";
 
 export const UserPopover = () => {
   const { data: users, refetch } = useUser();
